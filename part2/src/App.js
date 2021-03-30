@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
+import Button from './Button';
+import Display from './Display';
 
 const App = () => {
 
   const [counter, setCounter] = useState(0);
 
+  const add = () => setCounter(counter + 1);
+  const sub = () => setCounter(counter - 1);
+  const reset = () => setCounter(0)
+
   return <>
-    <p>{counter}</p>
-    <button onClick={() => setCounter(counter + 1)}>Add</button>
-    <button onClick={() => setCounter(0)}>Reset</button>
+    <Display counter={counter} />
+    <Button handleClick={add}>Add</Button>
+    <Button handleClick={sub}>Sub</Button>
+    <Button handleClick={reset}>Reset</Button>
   </>;
 };
 
