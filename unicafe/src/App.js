@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Feedback from './Feedback';
-import Statistic from './Statistic';
+import Statistics from './Statistics';
 
 const App = () => {
 
@@ -17,7 +17,7 @@ const App = () => {
       bad={bad}
       handleBad={() => setBad(bad + 1)}
     />
-    <Statistic
+    <Statistics
       good={good}
       neutral={neutral}
       bad={bad}
