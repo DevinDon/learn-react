@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Statistic = ({ good, neutral, bad }) => {
+
   const sum = good + neutral + bad;
 
   return <>
@@ -12,6 +13,7 @@ const Statistic = ({ good, neutral, bad }) => {
     <p>Avg: {(good - bad) / sum}</p>
     <p>Positive: {good / sum}</p>
   </>;
+
 };
 
 export default Statistic;
