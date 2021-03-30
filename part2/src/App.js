@@ -1,13 +1,13 @@
-import React from 'react';
-import Hello from './Hello';
+import React, { useState } from 'react';
 
 const App = () => {
 
-  const name = 'Alice';
-  const age = 18;
+  const [counter, setCounter] = useState(0);
 
   return <>
-    <Hello name={name} age={age} />
+    <p>{counter}</p>
+    <button onClick={() => setCounter(counter + 1)}>Add</button>
+    <button onClick={() => setCounter(0)}>Reset</button>
   </>;
 };
 
