@@ -1,0 +1,8 @@
+import React from 'react';
+import Person from './Person';
+
+const Persons = ({ persons }) => persons.map(
+  ({ name, number }) => <Person key={name} name={name} number={number} />
+);
+
+export default Persons;
