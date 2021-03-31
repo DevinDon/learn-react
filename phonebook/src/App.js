@@ -1,6 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { addNewPerson, getAllPersons } from './api';
+import { addNewPerson, delPerson, getAllPersons } from './api';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -25,7 +24,7 @@ const App = () => {
     }
     const newPerson = { name: newName, number: newNumber };
     const newPersons = [...persons, newPerson];
-    await addNewPerson({ ...newPerson, id: newPersons.length });
+    await addNewPerson(newPerson);
     setPersons(newPersons);
     setFilteredPersons(newPersons);
     setNewName('');
@@ -38,6 +37,15 @@ const App = () => {
     setFilteredPersons(persons.filter(({ name }) => name.toLowerCase().includes(filter.toLowerCase())));
   };
 
+  const handleDelete = async id => {
+    if (!window.confirm(`Delete ID ${id}?`)) {
+      return;
+    }
+    await delPerson(id);
+    setPersons(persons.filter(({ id: deletedID }) => deletedID !== id));
+    setFilteredPersons(filteredPersons.filter(({ id: deletedID }) => deletedID !== id));
+  }
+
   const handleInputName = ({ target: { value } }) => setNewName(value);
   const handleInputNumber = ({ target: { value } }) => setNewNumber(value);
 
@@ -49,7 +57,7 @@ const App = () => {
       <h2>Add new number</h2>
       <PersonForm {...{ newName, handleInputName, newNumber, handleInputNumber, handleSubmit }} />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} handleDelete={handleDelete} />
     </div>
   );
 

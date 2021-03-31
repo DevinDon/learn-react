@@ -9,3 +9,7 @@ export const getAllPersons = () => axios
 export const addNewPerson = person => axios
   .post(baseUrl + 'persons', person)
   .then(response => response.data);
+
+export const delPerson = id => axios
+  .delete(baseUrl + `persons/${id}`)
+  .then(response => response.data);
