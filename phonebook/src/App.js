@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { addNewPerson, delPerson, getAllPersons } from './api';
+import { addNewPerson, delPerson, getAllPersons, modifyPersonNumber } from './api';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -11,15 +11,28 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
-  useEffect(() => getAllPersons().then(data => {
-    setPersons(data);
-    setFilteredPersons(data);
-  }), []);
+  useEffect(
+    () => getAllPersons()
+      .then(data => {
+        setPersons(data);
+        setFilteredPersons(data);
+      }),
+    [],
+  );
 
   const handleSubmit = async event => {
     event.preventDefault();
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook.`);
+    const foundPerson = persons.find(person => person.name === newName);
+    if (foundPerson) {
+      if (!window.confirm(`${newName} is already added to phonebook, update it?`)) {
+        return;
+      }
+      const updatedPerson = { id: foundPerson.id, name: newName, number: newNumber };
+      console.log(updatedPerson);
+      await modifyPersonNumber(updatedPerson);
+      const updatedPersons = persons.filter(({ name }) => name !== newName).concat(updatedPerson);
+      setPersons(updatedPersons);
+      setFilteredPersons(updatedPersons);
       return;
     }
     const newPerson = { name: newName, number: newNumber };

@@ -13,3 +13,7 @@ export const addNewPerson = person => axios
 export const delPerson = id => axios
   .delete(baseUrl + `persons/${id}`)
   .then(response => response.data);
+
+export const modifyPersonNumber = ({ id, number }) => axios
+  .put(baseUrl + `persons/${id}`, { number })
+  .then(response => response.data);
