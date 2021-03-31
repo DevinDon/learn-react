@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import CountryDetail from './CountryDetail';
 
 const App = () => {
 
   const [countries, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState(countries);
-  const [filter, setFilter] = useState('');
 
   useEffect(
     () => axios.get('https://restcountries.eu/rest/v2/all')
@@ -18,36 +18,25 @@ const App = () => {
 
   const handleInputFilter = event => {
     event.preventDefault();
-    setFilter(event.target.value);
+    const filter = event.target.value;
     setFilteredCountries(
-      countries.filter(country => country.name.toLowerCase().includes(event.target.value.toLowerCase())),
+      countries.filter(country => country.name.toLowerCase().includes(filter.toLowerCase())),
     );
   }
 
   return <>
     <h2>Filter</h2>
     <div>
-      Filter: <input value={filter} onInput={handleInputFilter} />
+      Filter: <input onInput={handleInputFilter} />
     </div>
     <h2>Filtered Countries Information</h2>
     {
       filteredCountries.length > 10
         ? <p>Too many countries, input more filter.</p>
         : filteredCountries.length > 1
-          ? filteredCountries.map(({ name }) => <p key={name}>{name}</p>)
+          ? filteredCountries.map(country => <CountryDetail key={country.name} {...country} />)
           : filteredCountries.length === 1
-            ? filteredCountries.map(
-              ({ name, capital, region, population, languages, flag }) => <div key={name}>
-                <h3>{name}</h3>
-                <p>Capital: {capital}</p>
-                <p>Region: {region}</p>
-                <p>Population: {population}</p>
-                <ol>
-                  {languages.map(({ name }) => <li key={name}>{name}</li>)}
-                </ol>
-                <img src={flag} alt="Flag" width="200" />
-              </div>,
-            )
+            ? <CountryDetail {...filteredCountries[0]} show={true} />
             : <p>There is no filtered country.</p>
     }
   </>;
