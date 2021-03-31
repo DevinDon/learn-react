@@ -22,11 +22,13 @@ const App = () => {
       alert(`${newName} is already added to phonebook.`);
       return;
     }
-    const newPersons = [...persons, { name: newName, number: newNumber }];
+    const newPerson = { name: newName, number: newNumber };
+    const newPersons = [...persons, newPerson];
     setPersons(newPersons);
     setFilteredPersons(newPersons);
     setNewName('');
     setNewNumber('');
+    axios.post('http://localhost:4000/persons', { ...newPerson, id: newPersons.length });
   }
 
   const handleFilter = event => {
